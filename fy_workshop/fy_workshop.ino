@@ -63,30 +63,78 @@ void loop() {
   Dabble.processInput();
   int speed = 255;
 
-  if (GamePad.isDownPressed()) {
-    Serial.println("Up Pressed");
-    setMotors(in1, in2, en1, speed);
-    setMotors(in3, in4, en2, speed);
-  }
+  //GamePad
+  // if (GamePad.isDownPressed()) {
+  //   Serial.println("Up Pressed");
+  //   setMotors(in1, in2, en1, speed);
+  //   setMotors(in3, in4, en2, speed);
+  // }
 
-  if (GamePad.isUpPressed()) {
-    Serial.println("Down Pressed");
+  // if (GamePad.isUpPressed()) {
+  //   Serial.println("Down Pressed");
+  //   setMotors(in1, in2, en1, -speed);
+  //   setMotors(in3, in4, en2, -speed);
+  // }
+
+  // if (GamePad.isLeftPressed()) {
+  //   Serial.println("Left Pressed");
+  //   setMotors(in1, in2, en1, -speed);
+  //   setMotors(in3, in4, en2, speed);
+  // }
+
+  // if (GamePad.isRightPressed()) {
+  //   Serial.println("Right Pressed");
+  //   setMotors(in1, in2, en1, speed);
+  //   setMotors(in3, in4, en2, -speed);
+  // }
+
+  // if (!GamePad.isUpPressed() && !GamePad.isDownPressed() && !GamePad.isRightPressed() && !GamePad.isLeftPressed() && !GamePad.isTrianglePressed() && !GamePad.isCirclePressed() && !GamePad.isSquarePressed() && !GamePad.isCrossPressed() && !GamePad.isStartPressed() && !GamePad.isSelectPressed()) {
+  //   Serial.println("stop");
+  //   setMotors(in1, in2, en1, 0);
+  //   setMotors(in3, in4, en2, 0);
+  // }
+
+  //Joystick
+  int x_value = GamePad.getXaxisData();
+  int y_value = GamePad.getYaxisData();
+  int r_value = GamePad.getRadius();
+  int a_value = GamePad.getAngle();
+
+  int speed = map(r_value, 0, 7, 0, 255);
+
+  if(a_value==0 && x_value==0 && y_value==0)
+  {
+    Serial.println("stop");
+    setMotors(in1, in2, en1, 0);
+    setMotors(in3, in4, en2, 0);
+  }
+  else if(a_value >= 45 && a_value <= 135)
+  {
+    Serial.println("Forward");
     setMotors(in1, in2, en1, -speed);
     setMotors(in3, in4, en2, -speed);
   }
-
-  if (GamePad.isLeftPressed()) {
+  else if(a_value >= 135 && a_value <=225)
+  {
     Serial.println("Left Pressed");
     setMotors(in1, in2, en1, -speed);
     setMotors(in3, in4, en2, speed);
   }
-
-  if (GamePad.isRightPressed()) {
-    Serial.println("Right Pressed");
+  else if(a_value >= 225 && a_value <= 315)
+  {
+    Serial.println("Backward");
+    setMotors(in1, in2, en1, speed);
+    setMotors(in3, in4, en2, speed);
+  }
+  else
+  {
+    Serial.println("Right");
     setMotors(in1, in2, en1, speed);
     setMotors(in3, in4, en2, -speed);
-  }
+  } 
 
+
+  //common in both
   if (GamePad.isCirclePressed()) {
     Serial.println("Circle Pressed"); 
     myservo.write(60);
@@ -95,11 +143,5 @@ void loop() {
   if (GamePad.isTrianglePressed()) {
     Serial.println("Cross pressed");
     myservo.write(140);
-  }
-
-  if (!GamePad.isUpPressed() && !GamePad.isDownPressed() && !GamePad.isRightPressed() && !GamePad.isLeftPressed() && !GamePad.isTrianglePressed() && !GamePad.isCirclePressed() && !GamePad.isSquarePressed() && !GamePad.isCrossPressed() && !GamePad.isStartPressed() && !GamePad.isSelectPressed()) {
-    Serial.println("stop");
-    setMotors(in1, in2, en1, 0);
-    setMotors(in3, in4, en2, 0);
   }
 }
