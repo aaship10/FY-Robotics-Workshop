@@ -61,9 +61,9 @@ void setup() {
 
 void loop() {
   Dabble.processInput();
-  int speed = 255;
 
   //GamePad
+  // int speed = 255;
   // if (GamePad.isDownPressed()) {
   //   Serial.println("Up Pressed");
   //   setMotors(in1, in2, en1, speed);
