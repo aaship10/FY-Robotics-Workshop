@@ -17,6 +17,8 @@
 Servo myservo;
 #define an1 16
 
+int i=0;
+
 void setMotors(int inA, int inB, int pwm, int speed)
 {
   if (speed > 0)
@@ -108,19 +110,19 @@ void loop() {
     setMotors(in1, in2, en1, 0);
     setMotors(in3, in4, en2, 0);
   }
-  else if(a_value >= 45 && a_value <= 135)
+  else if(a_value > 45 && a_value <= 135)
   {
     Serial.println("Forward");
     setMotors(in1, in2, en1, -speed);
     setMotors(in3, in4, en2, -speed);
   }
-  else if(a_value >= 135 && a_value <=225)
+  else if(a_value > 135 && a_value <=225)
   {
     Serial.println("Left Pressed");
     setMotors(in1, in2, en1, -speed);
     setMotors(in3, in4, en2, speed);
   }
-  else if(a_value >= 225 && a_value <= 315)
+  else if(a_value > 225 && a_value <= 315)
   {
     Serial.println("Backward");
     setMotors(in1, in2, en1, speed);
@@ -135,13 +137,23 @@ void loop() {
 
 
   //common in both
-  if (GamePad.isCirclePressed()) {
+  if (GamePad.isCirclePressed()) 
+  {
     Serial.println("Circle Pressed"); 
-    myservo.write(60);
+    for(int i=45;i<=95;i++)
+    {
+      myservo.write(i);
+      delay(10);
+    }
   }
 
-  if (GamePad.isTrianglePressed()) {
-    Serial.println("Cross pressed");
-    myservo.write(140);
+  if (GamePad.isTrianglePressed()) 
+  {
+    Serial.println("Triangle pressed");
+    for(int i=95;i>=45;i--)
+    {
+      myservo.write(i);
+      delay(10);
+    }
   }
 }
